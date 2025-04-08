@@ -1,0 +1,15 @@
+{% extends "backlog/base.html" %}
+ 
+{% block title %}Tehtävälista{% endblock %}
+ 
+{% block content %}
+
+<h2>Kirjaudu sisään</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Kirjaudu</button>
+</form>
+ 
+</body>
+{% endblock %}
