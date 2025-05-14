@@ -1,0 +1,30 @@
+{% extends "backlog/base.html" %}
+ 
+{% block title %}Tehtävälista{% endblock %}
+ 
+{% block content %}
+    <h1>Tehtävälista</h1>
+ 
+    <p>Tervetuloa, {{ user.username }}!</p>
+ 
+    {% if request.user.is_superuser or request.user.is_staff %}
+        <p><strong>Admin-tila:</strong> Näytetään kaikki joukkoeet.</p>
+    {% comment %} {% else %}
+        <meta http-equiv="refresh" content="0; URL={% url 'task_maps' task.id %}"/> {% endcomment %}
+    {% endif %}
+ 
+    <div class="task-container">
+        {% for task_class, tasks in tasks_by_class.items %}
+            <div class="task-column">
+                <h3>{{ task_class.title }}</h3>
+                {% for task in tasks %}
+                    <div class="task-card p-2 border rounded">
+                        <h4>{{ task.title }}</h4>
+                        <p>{{ task.description }}</p>
+                        <p><a href="{% url 'task_maps' task.id %}">Kartat</a></p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

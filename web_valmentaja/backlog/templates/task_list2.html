@@ -1,0 +1,120 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="fi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tehtävälista</title>
+
+    <link rel="stylesheet" href="{% static 'backlog/style.css' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+<body>
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Tehtävälista</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'task_list' %}">Tehtävät</a>
+                    </li>
+                    {% if request.user.is_superuser or request.user.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <span class="navbar-text me-3">
+                    Tervetuloa, {{ user.username }}!
+                </span>
+                <form class="d-flex" method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-light" type="submit">Kirjaudu ulos</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    
+
+<h1>Tehtävälista</h1>
+    <div> <class="logout-container">
+        <div class="logout-card">
+        <p>Tervetuloa, {{ user.username }}!
+            <form method='post' action="{%url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Kirjaudu ulos</button>
+    
+            </form>
+        </p>
+</div>
+
+
+{% comment %} <div> <class="joukkoe">
+    <div class="logout-card">
+        <label for="joukkoeSelect">Valitse joukkoe</label>
+        <select type="text" id="joukkoeSelect" name="joukkoeSelect">
+            <option {{ user.username }}></option>
+        </select>
+        <br><br>
+        <input type="submit" value="Submit!"/>
+</form>
+        
+</div> {% endcomment %}
+        
+
+
+<div class="task-container">
+    {% for task_class, tasks_from_class in tasks_by_class.items %}
+        <h3>{{ task_class }}</h3>
+        <div class="task-columm">
+
+            {% for task in tasks_from_class %}
+                <div class="task-card {% if task.completed %}task-done{% endif %}">
+                    <h3>{{ task.title }}</h3>  <p style="background-image: url('anubis.jpg');"> 
+                    <p class="priority-{% if task.priority >= 4 %}high{% elif task.priority == 3 %}medium{% else %}low{% endif %}">
+                    
+                        {% if task.completed %} Hyvin tehty
+                        {% else %} Prioriteetti: {{ task.priority }}
+                        {% endif %}
+
+                    {% comment %} <p class="priority-{% if task.priority >= 4 %}high{% elif task.priority == 3 %}medium{% else %}low{% endif %}">
+                    <p>prioriteetti {{ task.priority }}</p> {% endcomment %}
+                    </p>
+                    <p><a href="{% url 'task_detail' task.id %}">{{ task.title }}</a> LINKKI
+
+                    <p><strong>Tila:</strong></a>
+                        {% if task.completed %} ✅ 
+                            <a href="{% url 'task_toggle_status2' task.id %}">Ei ollukkaan</a>
+                        {% else %} 
+                            <strong>❌</strong><a href="{% url 'task_toggle_status' task.id %}">Vaihda tilaa</a>
+                        {% endif %} </p>
+                    <p><strong>Luokka:</strong> {{ task.task_class }}</p>
+                </div>
+        {% endfor %}
+        </div>
+    {% endfor%}
+</div>
+
+ 
+</body>
+
+</html>
+
+
