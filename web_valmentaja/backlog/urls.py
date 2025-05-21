@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, task_list 
+from .views import home, task_list, task_maps
 
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -20,6 +20,7 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('tasks/', task_list, name='task_list')
+    path('joukkoeet', home, name='home'),
+    path('tasks/', task_list, name='task_list'),
+    path('maps', task_maps, name='task_maps'),
     ]
