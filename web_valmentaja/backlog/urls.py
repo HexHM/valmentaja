@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import home, task_list, task_maps
+from . import views
 
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -23,4 +24,5 @@ urlpatterns = [
     path('joukkoeet', home, name='home'),
     path('tasks/', task_list, name='task_list'),
     path('maps', task_maps, name='task_maps'),
+    path("register_user/", views.register, name="register_user"),
     ]

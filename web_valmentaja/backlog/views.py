@@ -6,7 +6,23 @@ from .forms import TaskEditForm, TaskEditModelForm
 from rest_framework import generics
 from .serializers import TaskSerializer, TaskClassSerializer
 from rest_framework.permissions import IsAuthenticated
+from .forms import UserRegisterForm
 
+
+
+def register(request): 
+    if request.method == "POST":
+        print("Uuden käyttäjän rekisteröinti")
+        form = UserRegisterForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return redirect("maps")
+            
+            
+    else:
+        form = UserRegisterForm()
+    return render(request, "backlog/register.html", { "from": form})
 
 class TaskClassListAPI(generics.ListAPIView): 
     queryset = TaskClass.objects.all()

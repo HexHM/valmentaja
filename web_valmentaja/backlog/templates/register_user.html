@@ -1,0 +1,17 @@
+<html>
+    <head>
+    </head>
+    <body>
+
+        <form method ="Post">
+            {% csrf_token %}
+                {% for fm in form %}
+                    <label >{{fm.label}}</label>
+                    {{fm}}
+                    </br>
+                {% endfor %}
+            <button type="submit">REKISTERÖI KÄYTTÄJÄ</button>
+        </form>
+
+    </body>
+</html>
